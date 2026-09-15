@@ -1,0 +1,25 @@
+services:
+  app:
+    image: ifp-pesquisa:${IFP_RELEASE:?defina a release}
+    container_name: ifp-pesquisa
+    restart: unless-stopped
+    env_file: /opt/ifp-pesquisa/private/runtime.env
+    read_only: true
+    user: '10001:10001'
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 128
+    mem_limit: 512m
+    cpus: 1.0
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m
+    volumes:
+      - /opt/ifp-pesquisa/state:/data
+      - /opt/ifp-pesquisa/backups:/backups
+    networks: [ifp-pesquisa]
+    logging:
+      driver: json-file
+      options: {max-size: '5m', max-file: '2'}
+networks:
+  ifp-pesquisa:
+    external: true

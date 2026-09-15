@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ajude o Instituto Facility PRO a entender os desafios de estudantes e estagiários de Educação Física. Sua experiência orienta os próximos passos.">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta name="theme-color" content="#171c19">
+  <title>{% block title %}Pesquisa IFP — Sua formação tem voz{% endblock %}</title>
+  <link rel="icon" href="{{ url_for('static',filename='favicon.svg') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <a class="skip" href="#main">Pular para o conteúdo</a>
+  <header class="topbar"><a class="brand" href="/" aria-label="Instituto Facility PRO, início"><span class="brand-monogram">IFP</span><span class="brand-name">INSTITUTO<br>FACILITY <strong>PRO</strong></span></a><span class="edition">{% block nav %}ESCUTA & FORMAÇÃO · 2026{% endblock %}</span></header>
+  {% block body %}{% endblock %}
+  <footer class="footer"><span>Instituto Facility PRO <span class="muted">/ Formação que continua.</span></span><a href="/admin">Área administrativa <span aria-hidden="true">↗</span></a></footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

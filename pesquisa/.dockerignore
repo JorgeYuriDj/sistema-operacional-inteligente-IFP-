@@ -1,0 +1,14 @@
+**
+!requirements.txt
+!requirements.lock
+!app.py
+!storage.py
+!survey.py
+!manage.py
+!wsgi.py
+!migrations/
+!migrations/**
+!templates/
+!templates/**
+!static/
+!static/**

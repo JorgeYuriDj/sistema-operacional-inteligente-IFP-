@@ -1,0 +1,27 @@
+name: Verificar pesquisa IFP
+on:
+  push:
+    paths: ['pesquisa/**', '.github/workflows/pesquisa.yml']
+  pull_request:
+    paths: ['pesquisa/**', '.github/workflows/pesquisa.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: pesquisa
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: pesquisa/requirements-dev.txt
+      - run: pip install -r requirements-dev.txt -c requirements.lock
+      - run: python -m playwright install --with-deps chromium webkit chrome
+      - run: python -m pytest tests -q --tb=short
+      - run: python -m pip_audit -r requirements.lock --progress-spinner off
+      - run: docker build -t ifp-pesquisa:ci .
