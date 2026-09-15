@@ -5,8 +5,11 @@ privada e histórico cumulativo. As planilhas de planejamento existentes foram p
 
 ## Aplicativo
 
-- [Pesquisa pública](https://pesquisa-ifp.187.77.248.206.sslip.io/)
-- [Administração](https://pesquisa-ifp.187.77.248.206.sslip.io/admin)
+- [Pesquisa pública](https://institutofacilitypro-bb4df8ce.nip.io/)
+- [Administração](https://institutofacilitypro-bb4df8ce.nip.io/admin)
+
+Endereço temporário com HTTPS. O endereço anterior encaminha para este; a adoção
+do domínio próprio depende da configuração de DNS pelo responsável.
 
 O código está em `pesquisa/`. A página pública apresenta o Instituto Facility PRO e
 as cinco perguntas da pesquisa, uma por etapa, com retorno sem perder o que foi
