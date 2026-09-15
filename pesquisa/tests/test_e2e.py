@@ -14,7 +14,7 @@ import pyotp
 import pytest
 import requests
 from cryptography.fernet import Fernet
-from playwright.sync_api import sync_playwright, expect
+from playwright.sync_api import sync_playwright, expect, TimeoutError as BrowserTimeout
 
 from manage import provision, erasures_path
 from storage import connect, backup
@@ -48,7 +48,7 @@ def test_browser_desktop_mobile_security_persistence_and_load(tmp_path, engine):
     try:
         with sync_playwright() as p:
             browser=p.chromium.launch(headless=True,channel="chrome") if engine == "chromium" else p.webkit.launch(headless=True)
-            desktop=browser.new_context(viewport={"width":1440,"height":1080},locale="pt-BR")
+            desktop=browser.new_context(viewport={"width":1440,"height":1080},locale="pt-BR",accept_downloads=True)
             page=desktop.new_page();errors=[];csp=[]
             page.on("pageerror",lambda error:errors.append(str(error)))
             page.on("console",lambda message:csp.append(message.text) if "violat" in message.text.lower() and "policy" in message.text.lower() else None)
@@ -104,7 +104,12 @@ def test_browser_desktop_mobile_security_persistence_and_load(tmp_path, engine):
             assert not page.evaluate('Boolean(window.injected)')
             assert page.locator('#records img').count()==0
             page.screenshot(path=str(screenshots/'admin-desktop.png'),full_page=True)
-            with page.expect_download() as info:page.locator('#export').click()
+            export_responses=[]
+            page.on('response',lambda response:export_responses.append({"status":response.status,"disposition":response.headers.get('content-disposition')}) if '/api/admin/export.csv' in response.url else None)
+            try:
+                with page.expect_download() as info:page.locator('#export').click()
+            except BrowserTimeout as error:
+                raise AssertionError({"download_timeout":True,"url":page.url,"responses":export_responses,"javascript":errors,"csp":csp}) from error
             download=info.value;download.save_as(str(tmp_path/'export.csv'))
             exported=list(csv.reader(io.StringIO((tmp_path/'export.csv').read_text(encoding='utf-8-sig')),delimiter=';'))
             assert len(exported)==3 and 'E-mail' in exported[0]
