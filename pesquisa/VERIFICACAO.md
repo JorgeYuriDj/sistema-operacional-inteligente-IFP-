@@ -5,6 +5,8 @@
 - 34 testes de API, autenticação, autorização, validação, persistência e backup passaram.
 - 2 testes completos de navegador passaram: Chromium/Chrome com perfil Pixel 7 e
   WebKit com perfil iPhone 13, além das visualizações de computador.
+- Os mesmos 36 testes também passaram no GitHub/Ubuntu em 54,66 segundos, seguidos
+  de auditoria das dependências e construção Docker. [Execução verificada](https://github.com/JorgeYuriDj/sistema-operacional-inteligente-IFP-/actions/runs/35027389691).
 - Auditoria de `requirements.lock`: nenhuma vulnerabilidade conhecida no catálogo
   consultado nesta data. Isso não prova ausência de falhas desconhecidas.
 - JavaScript validado e nenhuma exceção de execução ou violação de CSP observada nos
@@ -26,7 +28,7 @@ reaplicadas. O campo de contato não é usado como chave única de pessoa.
 
 Em cada execução de navegador, 30 envios sintéticos por HTTP, com concorrência 12,
 foram gravados sem perda, somando 32 registros no banco isolado. Medidas locais da
-última rodada: p95 de 859 ms no ensaio Chromium e 922 ms no ensaio WebKit. Não são
+última rodada local: p95 de 556 ms no ensaio Chromium e 485 ms no ensaio WebKit. Não são
 estimativa de capacidade máxima nem medição de latência da internet em celulares.
 
 ## VPS e HTTPS
@@ -35,6 +37,8 @@ Verificação adicional no endereço publicado, com certificado validado:
 
 - Envio e confirmação usando os perfis Android e iPhone.
 - Login real com senha e autenticador, filtros e download CSV.
+- Após a correção de compatibilidade, o CSV filtrado foi baixado novamente em
+  Chrome e WebKit no endereço HTTPS, preservando a página do painel aberta.
 - Reinício do contêiner e confirmação de que os registros e o acesso persistiram.
 - Backup do banco em uso, integridade e restauração de uma cópia com os dois protocolos
   técnicos excluídos. Registro de exclusões reaplicado e zero respostas restauradas.
@@ -58,6 +62,10 @@ Verificação adicional no endereço publicado, com certificado validado:
    instrumento corrigido para clicar e verificar a recusa, preservando o limite.
 5. Executor auxiliar era coletado como teste: adicionada guarda de execução direta.
 6. Espaço entre palavras se perdia em quebra de título no celular: texto corrigido.
+7. No primeiro teste em Linux, WebKit não gerava o evento esperado ao exportar CSV.
+   O link recebeu o atributo HTML `download`, mantendo autenticação, filtros e o
+   cabeçalho de anexo. O download e todo o fluxo passaram novamente em ambos os
+   navegadores, tanto no Windows quanto no Linux; nenhum teste foi desativado.
 
 ## Reproduzir
 
