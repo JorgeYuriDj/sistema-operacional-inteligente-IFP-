@@ -18,6 +18,13 @@ Filtros: período, formação, área e formato. Cada percentual indica sua base;
 de múltipla seleção pode somar mais de 100%. Os insights são cálculos determinísticos,
 sem serviço de IA e sem custo de inferência.
 
+## Identidade visual
+
+Logo oficial em `pesquisa/static/ifp-logo.png`, preservada sem recorte, recoloração ou
+recriação. A mesma arte aparece no formulário, login e painel, com proporção original.
+Paleta IFP: preto quente `#0C0A09`, dourado `#D4AF37` e creme `#F5F2EA`, com os tons
+de superfície e texto definidos pela Plataforma IFP.
+
 ## Persistência e segurança
 
 - SQLite em volume persistente, transações, restrições e migração aditiva versionada.

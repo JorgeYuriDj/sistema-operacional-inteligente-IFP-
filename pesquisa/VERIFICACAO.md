@@ -50,6 +50,18 @@ Verificação adicional no endereço publicado, com certificado validado:
 - Backup diário na VPS ativado e executado. Cópia adicional no computador verificada
   e programada para execução diária quando a sessão do responsável estiver disponível.
 
+## Identidade oficial do IFP
+
+A logo PNG foi copiada integralmente do arquivo usado pela Plataforma e pelo motor
+de conteúdo, sem recorte, filtros ou recoloração. SHA-256 do original e da cópia:
+`ed073914b7324f988a28d4c626300ba4ead6ccb70ab3abba9133f0c64014fffb`.
+O cabeçalho preserva a proporção 900 × 500 no formulário, login e administração.
+
+Paleta de preto quente, dourado e creme aplicada também aos campos, gráficos,
+tabelas, foco e estados de seleção. Contrastes de texto, botões e bordas de campos
+calculados; capturas de computador e celular inspecionadas. Os dois fluxos completos
+Chrome/Android e WebKit/iPhone passaram novamente após a alteração visual.
+
 ## Falhas encontradas e corrigidas durante a construção
 
 1. Duração do CSRF configurada com tipo incompatível: alterada para segundos e
