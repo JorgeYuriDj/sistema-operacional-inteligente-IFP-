@@ -9,8 +9,9 @@ privada e histórico cumulativo. As planilhas de planejamento existentes foram p
 - [Administração](https://pesquisa-ifp.187.77.248.206.sslip.io/admin)
 
 O código está em `pesquisa/`. A página pública apresenta o Instituto Facility PRO e
-as cinco perguntas da pesquisa. Nome, e-mail e telefone são opcionais. A autorização
-para contato é independente da participação.
+as cinco perguntas da pesquisa, uma por etapa, com retorno sem perder o que foi
+preenchido. A sexta etapa reúne identificação e consentimentos. Nome, e-mail e
+telefone são opcionais. A autorização para contato é independente da participação.
 
 O painel `/admin` exige senha e código de autenticador. Mostra contagens, gráficos,
 evolução diária, cruzamento formação × formato, respostas completas e exportação CSV.
@@ -23,7 +24,14 @@ sem serviço de IA e sem custo de inferência.
 Logo oficial em `pesquisa/static/ifp-logo.png`, preservada sem recorte, recoloração ou
 recriação. A mesma arte aparece no formulário, login e painel, com proporção original.
 Paleta IFP: preto quente `#0C0A09`, dourado `#D4AF37` e creme `#F5F2EA`, com os tons
-de superfície e texto definidos pela Plataforma IFP.
+de superfície e texto definidos pela Plataforma IFP. A leitura usa fundo creme,
+texto escuro e a fonte Hanken Grotesk hospedada no próprio site, sem requisições
+a serviços de fontes. A licença OFL acompanha os arquivos em `static/fonts/`.
+
+No celular, a apresentação é curta e o formulário vem antes do contexto institucional
+detalhado. Campos têm rótulos visíveis, alternativas com área de toque ampla e
+tamanho de texto de pelo menos 16 px nos controles. A navegação respeita a
+preferência do sistema por movimento reduzido.
 
 ## Persistência e segurança
 

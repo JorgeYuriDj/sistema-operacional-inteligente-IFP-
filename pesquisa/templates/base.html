@@ -6,15 +6,16 @@
   <meta name="description" content="Ajude o Instituto Facility PRO a entender os desafios de estudantes e estagiários de Educação Física. Sua experiência orienta os próximos passos.">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="theme-color" content="#0c0a09">
-  <title>{% block title %}Pesquisa IFP — Sua formação tem voz{% endblock %}</title>
+  <title>{% block title %}Pesquisa IFP{% endblock %}</title>
   <link rel="icon" href="{{ url_for('static',filename='ifp-logo.png') }}" type="image/png">
   <link rel="apple-touch-icon" href="{{ url_for('static',filename='ifp-logo.png') }}">
-  <link rel="stylesheet" href="{{ url_for('static',filename='style.css',v='20260915-brand') }}">
+  <link rel="preload" href="{{ url_for('static',filename='fonts/hanken-grotesk-400.woff2') }}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ url_for('static',filename='style.css',v='20260915-flow') }}">
   {% block head %}{% endblock %}
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
   <a class="skip" href="#main">Pular para o conteúdo</a>
-  <header class="topbar"><a class="brand" href="/" aria-label="Instituto Facility PRO, início"><img src="{{ url_for('static',filename='ifp-logo.png') }}" alt="" width="900" height="500"></a><span class="edition">{% block nav %}ESCUTA & FORMAÇÃO · 2026{% endblock %}</span></header>
+  <header class="topbar"><div class="topbar-inner"><a class="brand" href="/" aria-label="Instituto Facility PRO, início"><img src="{{ url_for('static',filename='ifp-logo.png') }}" alt="" width="900" height="500"></a><span class="edition">{% block nav %}Pesquisa IFP <small>Educação Física</small>{% endblock %}</span></div></header>
   {% block body %}{% endblock %}
   <footer class="footer"><span>Instituto Facility PRO <span class="muted">/ Formação que continua.</span></span><a href="/admin">Área administrativa <span aria-hidden="true">↗</span></a></footer>
   {% block scripts %}{% endblock %}

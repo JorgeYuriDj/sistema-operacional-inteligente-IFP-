@@ -28,7 +28,7 @@ reaplicadas. O campo de contato não é usado como chave única de pessoa.
 
 Em cada execução de navegador, 30 envios sintéticos por HTTP, com concorrência 12,
 foram gravados sem perda, somando 32 registros no banco isolado. Medidas locais da
-última rodada local: p95 de 556 ms no ensaio Chromium e 485 ms no ensaio WebKit. Não são
+última rodada local: p95 de 661 ms no ensaio Chromium e 722 ms no ensaio WebKit. Não são
 estimativa de capacidade máxima nem medição de latência da internet em celulares.
 
 ## VPS e HTTPS
@@ -61,6 +61,32 @@ Paleta de preto quente, dourado e creme aplicada também aos campos, gráficos,
 tabelas, foco e estados de seleção. Contrastes de texto, botões e bordas de campos
 calculados; capturas de computador e celular inspecionadas. Os dois fluxos completos
 Chrome/Android e WebKit/iPhone passaram novamente após a alteração visual.
+
+## Redesenho da experiência
+
+O fluxo passou a apresentar uma pergunta por etapa, seguida de identificação e
+consentimentos. As cinco perguntas e suas alternativas mantêm o texto e os códigos
+originais. A introdução foi encurtada, o corpo de leitura passou para creme com
+texto escuro e os campos mantêm rótulos sempre visíveis. A logo PNG é a mesma.
+
+Os testes completos Chrome e WebKit foram atualizados e executados novamente:
+retorno conserva as respostas, avanço exige resposta da etapa atual, apenas uma
+etapa fica visível e falhas de conexão permitem tentar o mesmo envio novamente.
+Também verificam posição da primeira pergunta no celular, controles com texto de
+pelo menos 16 px, alvos de toque de pelo menos 44 px e ausência de rolagem lateral.
+
+Na revisão de contraste, textos pequenos dourados sobre creme e títulos sobre
+fundo intermediário foram escurecidos. Texto secundário sobre creme: 5,85:1;
+dourado escuro sobre formulário claro: 4,76:1; texto do botão: 9,39:1; borda de
+campo: 3,61:1. A fonte usa quatro arquivos WOFF2 locais com pesos fixos, somando
+54.840 bytes, para manter a hierarquia consistente nos dois motores de navegador.
+O CSS e o JavaScript da interface têm endereço versionado para atualização do cache.
+
+Uma inspeção adicional percorreu as seis etapas em larguras de 320, 390, 768 e
+1.440 px, em Chromium e WebKit. Nenhuma das oito combinações apresentou rolagem
+lateral; os pesos regular e negrito da fonte foram diferenciados nos dois motores.
+No perfil de 390 px, a primeira pergunta começa aproximadamente 450 px abaixo
+do topo da página.
 
 ## Falhas encontradas e corrigidas durante a construção
 

@@ -1,26 +1,28 @@
 'use strict';
 const form = document.querySelector('#survey');
-const steps = [...document.querySelectorAll('[data-step]')];
+const steps = [...form.querySelectorAll('[data-step]')];
 const err = document.querySelector('#form-error');
 let step = 0;
-const titles = ['Seu momento', 'Sua preparação', 'Sua voz'];
+const titles = ['Sua formação', 'Seu caminho', 'Sua preparação', 'Como quer aprender', 'Sua experiência', 'Seus dados'];
+const lastStep = steps.length - 1;
+let submitting = false;
 form.noValidate = true;
 function showStep(focus = false) {
   steps.forEach(el => { el.hidden = Number(el.dataset.step) !== step; });
   document.querySelector('#previous').hidden = step === 0;
-  document.querySelector('#next').hidden = step === 2;
-  document.querySelector('#submit').hidden = step !== 2;
-  document.querySelector('#step-label').textContent = `0${step + 1} / 03`;
+  document.querySelector('#next').hidden = step === lastStep;
+  document.querySelector('#submit').hidden = step !== lastStep;
+  document.querySelector('#step-label').textContent = step < 5 ? `Pergunta ${step + 1} de 5` : 'Última etapa';
   document.querySelector('#step-title').textContent = titles[step];
   const progress = document.querySelector('#progress');
-  progress.setAttribute('aria-valuenow', String(step + 1));
-  progress.dataset.step = String(step);
+  progress.value = step + 1;
+  progress.setAttribute('aria-valuetext', `Etapa ${step + 1} de ${steps.length}`);
   err.hidden = true;
   if (focus) {
-    const target = document.querySelector(`[data-step="${step}"] legend`);
+    const target = steps[step].querySelector('legend,h2');
     target.tabIndex = -1;
     target.focus({preventScroll: true});
-    document.querySelector('.survey-card').scrollIntoView({behavior: 'smooth', block: 'start'});
+    document.querySelector('.survey-card').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start'});
   }
 }
 function error(message) { err.textContent = message; err.hidden = false; }
@@ -30,7 +32,7 @@ function validStep() {
       if (!input.checkValidity()) { input.reportValidity(); return false; }
     }
   }
-  if (step === 1 && !form.querySelector('input[name="gaps"]:checked')) {
+  if (step === 2 && !form.querySelector('input[name="gaps"]:checked')) {
     error('Na pergunta 3, selecione uma ou duas opções.');
     form.querySelector('input[name="gaps"]').focus();
     return false;
@@ -53,7 +55,8 @@ document.querySelector('#open-privacy').addEventListener('click', () => privacy.
 document.querySelector('#close-privacy').addEventListener('click', () => privacy.close());
 form.addEventListener('submit', async event => {
   event.preventDefault();
-  if (step < 2) { if (validStep()) { step++; showStep(true); } return; }
+  if (submitting) return;
+  if (step < lastStep) { if (validStep()) { step++; showStep(true); } return; }
   if (!validStep()) return;
   const fields = new FormData(form);
   const body = Object.fromEntries(fields);
@@ -66,7 +69,9 @@ form.addEventListener('submit', async event => {
     error('Informe e-mail ou telefone para receber contato, ou desmarque a autorização.'); return;
   }
   const button = document.querySelector('#submit');
-  button.disabled = true; button.textContent = 'Registrando…'; err.hidden = true;
+  submitting = true;
+  form.querySelectorAll('.form-actions button').forEach(control => { control.disabled = true; });
+  button.textContent = 'Registrando…'; err.hidden = true;
   try {
     const response = await fetch('/api/responses', {method: 'POST', headers: {'Content-Type': 'application/json', 'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content}, body: JSON.stringify(body)});
     const data = await response.json();
@@ -78,6 +83,10 @@ form.addEventListener('submit', async event => {
     const success = document.querySelector('#success'); success.hidden = false; success.focus();
   } catch (failure) {
     error(failure instanceof TypeError ? 'A conexão falhou. Suas respostas continuam nesta tela. Tente enviar novamente; o mesmo envio não será duplicado.' : failure.message);
-  } finally { button.disabled = false; button.textContent = 'Enviar respostas ↗'; }
+  } finally {
+    submitting = false;
+    form.querySelectorAll('.form-actions button').forEach(control => { control.disabled = false; });
+    button.textContent = 'Enviar respostas';
+  }
 });
 showStep();

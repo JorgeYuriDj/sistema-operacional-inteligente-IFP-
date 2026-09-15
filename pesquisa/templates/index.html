@@ -1,40 +1,79 @@
 {% extends 'base.html' %}
+{% block title %}Pesquisa IFP — Estudantes e Estagiários de Educação Física{% endblock %}
+{% block body_class %}survey-page{% endblock %}
 {% block body %}
-<main id="main">
-  <section class="hero wrap">
-    <div><p class="eyebrow"><span class="dot"></span> PESQUISA · EDUCAÇÃO FÍSICA</p><h1>Sua formação<br>tem <em>voz.</em></h1><p class="hero-description">Entre o que você aprende e o que a profissão exige, existe uma conversa que precisamos ter. E ela começa com você.</p><a class="button gold" href="#pesquisa">Quero participar <span aria-hidden="true">↗</span></a><span class="hero-meta">5 perguntas <span>·</span> cerca de 3 minutos</span></div>
-    <aside class="about"><span class="index-mark">01 / O INSTITUTO</span><h2>Conhecimento que<br>encontra a prática.</h2><p>O Instituto Facility PRO é dedicado à formação continuada em Educação Física. Conecta conhecimento técnico, experiência prática e desenvolvimento de carreira para apoiar a atuação de professores e personal trainers.</p><div class="principles"><span>Técnica & treinamento</span><span>Carreira & negócio</span><span>Troca de experiências</span></div><p class="about-bottom">Agora, queremos ouvir quem está construindo esse caminho.</p></aside>
+<main id="main" class="research-layout wrap">
+  <section class="research-intro" aria-labelledby="research-title">
+    <p class="eyebrow">Estudantes e estagiários de Educação Física</p>
+    <h1 id="research-title">Da faculdade<br> para a <span>profissão.</span></h1>
+    <p class="intro-copy">Conte como está sua preparação para o mercado e ajude o IFP a planejar formações mais próximas da sua realidade.</p>
+    <p class="survey-meta"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>5 perguntas <span aria-hidden="true">·</span> Cerca de 3 minutos</span></p>
+    <p class="intro-note">Sua participação é voluntária.</p>
   </section>
-  <section class="research-section" id="pesquisa"><div class="research-layout wrap">
-    <aside class="research-intro"><p class="eyebrow">02 / A SUA EXPERIÊNCIA</p><h2>O próximo passo <br>começa na escuta.</h2><p>Suas respostas ajudarão o IFP a identificar necessidades e planejar ações de desenvolvimento profissional.</p><ul class="plain-list"><li><span>✓</span> Participação voluntária</li><li><span>✓</span> Respostas acessíveis somente à equipe autorizada</li><li><span>✓</span> Sem respostas certas ou erradas</li></ul><details class="context-detail"><summary>Sobre esta pesquisa</summary><p>É uma pesquisa estratégica com estudantes, estagiários e recém-formados. Participar não gera matrícula, cobrança ou promessa de emprego. A formação continuada complementa a graduação e respeita as exigências de habilitação profissional.</p></details></aside>
-    <div class="survey-card">
-      <div class="form-top"><div><span class="eyebrow">PESQUISA IFP</span><h2>Estudantes e Estagiários<br>de Educação Física</h2></div><span id="step-label" class="step-label">01 / 03</span></div>
-      <div class="progress-track" role="progressbar" aria-label="Etapas da pesquisa" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1" id="progress"><span></span></div>
-      <noscript><p class="notice">Ative o JavaScript do navegador para preencher e enviar esta pesquisa.</p></noscript>
-      <form id="survey" data-token="{{ form_token }}" data-key="{{ submission_key }}">
-        {% for q in questions %}
-          {% set step = 0 if loop.index <= 2 else (1 if loop.index <= 4 else 2) %}
-          <fieldset class="question" data-step="{{ step }}" data-question="{{ q.id }}"><legend><span class="question-number">{{ '%02d'|format(loop.index) }}</span>{{ q.title }}</legend>
-          {% if q.id == 'wish' %}
-            <p class="hint">Conte com suas palavras. Evite informar dados de saúde ou dados pessoais de outras pessoas.</p><label for="wish" class="sr-only">Sua principal dificuldade</label><textarea name="wish" id="wish" rows="5" minlength="3" maxlength="2000" required placeholder="Eu gostaria de me sentir mais preparado(a) para…"></textarea><div class="char-count"><span id="characters">0</span> / 2.000</div>
-          {% else %}
-            {% if q.multiple %}<p class="hint">Marque até 2 opções. “Nenhuma dessas áreas” deve ser marcada sozinha.</p>{% endif %}
-            <div class="options">{% for code,label in q.options %}<label class="option"><input type="{{ 'checkbox' if q.multiple else 'radio' }}" name="{{ q.id }}" value="{{ code }}" {% if not q.multiple %}required{% endif %}><span>{{ label }}</span></label>{% endfor %}</div>
-          {% endif %}
-          </fieldset>
-        {% endfor %}
-        <section class="identity-section" data-step="2"><h3>Vamos nos conhecer?</h3><p class="hint">Nome, e-mail e telefone são opcionais. Você pode participar sem se identificar.</p><div class="input-grid"><label class="wide">Nome<input name="name" autocomplete="name" maxlength="100" placeholder="Seu nome"></label><label>E-mail<input type="email" name="email" autocomplete="email" maxlength="254" placeholder="voce@exemplo.com"></label><label>Telefone / WhatsApp<input type="tel" name="phone" autocomplete="tel" maxlength="25" placeholder="(61) 99999-9999"></label></div>
-        <label class="consent"><input type="checkbox" name="contact_consent"><span>Quero receber contato do IFP sobre ações de formação e novidades pelo e-mail ou telefone informado. <small>Opcional. Posso cancelar a qualquer momento.</small></span></label>
-        <label class="consent research-consent"><input type="checkbox" name="research_consent" required><span>Li o <button type="button" class="inline-button" id="open-privacy">aviso de privacidade</button> e concordo com o uso das minhas respostas pelo Instituto Facility PRO para esta pesquisa e seu planejamento estratégico.</span></label></section>
-        <div class="honeypot" aria-hidden="true"><label>Não preencher<input name="website" tabindex="-1" autocomplete="off"></label></div>
-        <p id="form-error" class="error" role="alert" hidden></p>
-        <div class="form-actions"><button type="button" id="previous" class="button subtle" hidden>← Voltar</button><span id="step-title">Seu momento</span><button type="button" class="button dark" id="next">Continuar <span aria-hidden="true">→</span></button><button type="submit" class="button dark" id="submit" hidden>Enviar respostas <span aria-hidden="true">↗</span></button></div>
-        <p class="save-note">Suas respostas são registradas ao concluir o envio.</p>
-      </form>
-      <section id="success" class="success" hidden tabindex="-1"><span class="success-icon" aria-hidden="true">✓</span><p class="eyebrow">RESPOSTA REGISTRADA</p><h2>Você faz parte<br>dessa construção.</h2><p>Obrigado por compartilhar sua experiência. Sua participação ajuda o IFP a planejar os próximos passos da formação profissional.</p><div class="receipt"><small>GUARDE SEU PROTOCOLO</small><code id="receipt"></code></div><p class="hint">Para consultar seus dados ou solicitar correção ou exclusão, fale com o IFP e informe este protocolo.</p><a class="button dark" href="{{ contact }}" target="_blank" rel="noopener noreferrer">Falar com o IFP ↗</a></section>
-    </div>
-  </div></section>
+
+  <section class="survey-card" id="pesquisa" aria-label="Questionário da pesquisa IFP">
+    <div class="form-top"><span id="step-label">Pergunta 1 de 5</span><span id="step-title">Sua formação</span></div>
+    <progress id="progress" class="progress-track" value="1" max="6" aria-label="Progresso da pesquisa">Etapa 1 de 6</progress>
+    <noscript><p class="notice">Ative o JavaScript do navegador para preencher e enviar esta pesquisa.</p></noscript>
+    <form id="survey" data-token="{{ form_token }}" data-key="{{ submission_key }}">
+      {% for q in questions %}
+      <fieldset class="question" data-step="{{ loop.index0 }}" data-question="{{ q.id }}" {% if not loop.first %}hidden{% endif %} aria-describedby="hint-{{ q.id }}">
+        <legend tabindex="-1">{{ q.title }}</legend>
+        {% if q.id == 'wish' %}
+        <p class="hint" id="hint-{{ q.id }}">Conte com suas palavras. Evite dados de saúde ou informações pessoais de outras pessoas.</p>
+        <label for="wish" class="sr-only">Sua principal dificuldade</label>
+        <textarea name="wish" id="wish" rows="6" minlength="3" maxlength="2000" required placeholder="Eu gostaria de me sentir mais preparado(a) para…"></textarea>
+        <div class="char-count"><span id="characters">0</span> / 2.000 caracteres</div>
+        {% else %}
+        <p class="hint" id="hint-{{ q.id }}">{% if q.multiple %}Marque até 2 opções. “Nenhuma dessas áreas” deve ser marcada sozinha.{% else %}Escolha a opção que mais combina com você.{% endif %}</p>
+        <div class="options">{% for code,label in q.options %}
+          <label class="option"><input type="{{ 'checkbox' if q.multiple else 'radio' }}" name="{{ q.id }}" value="{{ code }}" {% if not q.multiple %}required{% endif %}><span>{{ label }}</span></label>
+        {% endfor %}</div>
+        {% endif %}
+      </fieldset>
+      {% endfor %}
+
+      <section class="identity-section" data-step="5" hidden aria-labelledby="identity-title">
+        <h2 id="identity-title" tabindex="-1">Para finalizar, vamos nos conhecer?</h2>
+        <p class="hint">Você pode participar sem se identificar. Preencha seus dados se quiser deixar um contato.</p>
+        <div class="input-grid">
+          <label class="wide" for="name">Nome <span class="optional">(opcional)</span><input id="name" name="name" autocomplete="name" maxlength="100" placeholder="Como podemos chamar você?"></label>
+          <label for="email">E-mail <span class="optional">(opcional)</span><input id="email" type="email" name="email" autocomplete="email" maxlength="254" placeholder="voce@exemplo.com"></label>
+          <label for="phone">Telefone / WhatsApp <span class="optional">(opcional)</span><input id="phone" type="tel" name="phone" autocomplete="tel" maxlength="25" placeholder="(61) 99999-9999"></label>
+        </div>
+        <label class="consent"><input type="checkbox" name="contact_consent"><span>Quero receber contato do IFP sobre ações de formação e novidades pelo e-mail ou telefone informado.<small>Opcional. Posso cancelar a qualquer momento.</small></span></label>
+        <label class="consent research-consent"><input type="checkbox" name="research_consent" required><span>Li o <button type="button" class="inline-button" id="open-privacy">aviso de privacidade</button> e concordo com o uso das minhas respostas pelo Instituto Facility PRO para esta pesquisa e seu planejamento estratégico.</span></label>
+      </section>
+      <div class="honeypot" aria-hidden="true"><label>Não preencher<input name="website" tabindex="-1" autocomplete="off"></label></div>
+      <p id="form-error" class="error" role="alert" hidden></p>
+      <div class="form-actions">
+        <button type="button" id="previous" class="button subtle" hidden><span aria-hidden="true">←</span> Voltar</button>
+        <button type="button" class="button primary" id="next">Continuar <span aria-hidden="true">→</span></button>
+        <button type="submit" class="button primary" id="submit" hidden>Enviar respostas</button>
+      </div>
+      <p class="save-note"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Suas respostas são registradas ao concluir o envio.</p>
+    </form>
+    <section id="success" class="success" hidden tabindex="-1">
+      <span class="success-icon" aria-hidden="true">✓</span>
+      <p class="eyebrow">Resposta registrada</p>
+      <h2>Obrigado por participar.</h2>
+      <p>Sua experiência vai ajudar o IFP a planejar os próximos passos da formação profissional.</p>
+      <div class="receipt"><span>Guarde seu protocolo</span><code id="receipt"></code></div>
+      <p class="hint">Para consultar, corrigir ou excluir seus dados, fale com o IFP e informe este protocolo.</p>
+      <a class="button subtle" href="{{ contact }}" target="_blank" rel="noopener noreferrer">Falar com o IFP <span aria-hidden="true">↗</span></a>
+    </section>
+  </section>
+
+  <aside class="about-ifp">
+    <div class="about-heading"><span class="short-rule" aria-hidden="true"></span><h2>Formação que acompanha a vida profissional.</h2></div>
+    <p>O Instituto Facility PRO conecta conhecimento técnico, prática e desenvolvimento de carreira em Educação Física.</p>
+    <details><summary>Sobre o IFP e esta pesquisa <span aria-hidden="true">+</span></summary><div>
+      <p>O IFP é dedicado à formação continuada de professores e personal trainers. Esta pesquisa ouve estudantes, estagiários e recém-formados para identificar necessidades e planejar ações de desenvolvimento profissional.</p>
+      <p>A formação continuada complementa a graduação e respeita as exigências de habilitação profissional. Participar da pesquisa não gera matrícula, cobrança ou promessa de emprego.</p>
+      <p>As respostas individuais ficam acessíveis somente à equipe autorizada. A autorização para receber contato é separada e opcional.</p>
+    </div></details>
+  </aside>
   <dialog id="privacy-dialog" aria-labelledby="privacy-title"><div class="dialog-heading"><span class="eyebrow">TRANSPARÊNCIA</span><button type="button" class="icon-button" id="close-privacy" aria-label="Fechar aviso de privacidade">×</button></div><h2 id="privacy-title">Sua resposta merece cuidado.</h2><p>O <strong>Instituto Facility PRO</strong> utiliza as respostas para entender necessidades de formação, acompanhar sua evolução ao longo do tempo e orientar seu planejamento estratégico.</p><h3>O que é registrado</h3><p>As cinco respostas, data e hora, protocolo, versão da pesquisa e autorizações. Nome, e-mail e telefone são opcionais. O campo aberto pode conter informações que permitam identificar você; evite dados sensíveis ou de terceiros.</p><h3>Acesso e uso</h3><p>Apenas a equipe autorizada acessa as respostas individuais. As análises podem ser apresentadas de forma agregada. Os dados ficam em infraestrutura contratada pelo responsável pelo IFP, com acesso restrito e cópias de segurança. Não há rastreadores de publicidade nesta página.</p><h3>Histórico e suas escolhas</h3><p>As respostas compõem um histórico cumulativo enquanto forem necessárias à finalidade informada, sujeito a revisão pelo IFP. Você pode revogar sua autorização e pedir acesso, correção ou exclusão. Cópias de segurança possuem retenção de até 30 dias; uma restauração deve reaplicar as exclusões registradas.</p><p>A autorização para contato é separada e opcional. Recusar contato não impede a participação.</p><p><a href="{{ contact }}" target="_blank" rel="noopener noreferrer">Falar com o IFP sobre seus dados ↗</a></p><p class="hint">Aviso atualizado em 15 de setembro de 2026.</p></dialog>
 </main>
 {% endblock %}
-{% block scripts %}<script src="{{ url_for('static',filename='survey.js') }}" defer></script>{% endblock %}
+{% block scripts %}<script src="{{ url_for('static',filename='survey.js',v='20260915-flow') }}" defer></script>{% endblock %}
